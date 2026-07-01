@@ -21,8 +21,8 @@ namespace CEMS.Models
         [Range(1, int.MaxValue)]
         public int Capacity { get; set; }
 
-        [StringLength(255)]
-        public string? ImagePath { get; set; } = "/images/events/img1_workshop.png";
+        [StringLength(500)]
+        public string? ImagePath { get; set; }
 
         // Many-to-many navigations
         public List<Activity> Activities { get; set; } = new();

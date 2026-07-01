@@ -5,12 +5,52 @@
       "PackagePath": "staticwebassets\\CEMS.bundle.scp.css"
     },
     {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\cems-theme.css",
+      "PackagePath": "staticwebassets\\css\\cems-theme.css"
+    },
+    {
       "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },
     {
       "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\favicon.ico",
       "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\activities\\img1_talk.png",
+      "PackagePath": "staticwebassets\\images\\activities\\img1_talk.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\activities\\img2_game.png",
+      "PackagePath": "staticwebassets\\images\\activities\\img2_game.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\activities\\img3_workshop.png",
+      "PackagePath": "staticwebassets\\images\\activities\\img3_workshop.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\events\\img1_workshop.png",
+      "PackagePath": "staticwebassets\\images\\events\\img1_workshop.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\events\\img2_conference.png",
+      "PackagePath": "staticwebassets\\images\\events\\img2_conference.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\events\\img3_networking.png",
+      "PackagePath": "staticwebassets\\images\\events\\img3_networking.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\venues\\img1_auditorium.png",
+      "PackagePath": "staticwebassets\\images\\venues\\img1_auditorium.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\venues\\img2_banquet.png",
+      "PackagePath": "staticwebassets\\images\\venues\\img2_banquet.png"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\images\\venues\\img3_outdoor.png",
+      "PackagePath": "staticwebassets\\images\\venues\\img3_outdoor.png"
     },
     {
       "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\js\\site.js",

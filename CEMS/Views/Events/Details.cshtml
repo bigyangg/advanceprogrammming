@@ -3,56 +3,78 @@
     ViewData["Title"] = "Event Details";
 }
 
-<div class="container mt-4">
-    <div class="row">
-        <!-- Event Image & Main Info -->
-        <div class="col-lg-6">
-            <div class="card shadow-sm mb-4">
+<!-- Link to new theme CSS -->
+<link rel="stylesheet" href="~/css/cems-theme.css" />
+
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>@Model.Name</h1>
+        <p>@Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")</p>
+    </div>
+</div>
+
+<div class="container" style="margin-top: var(--spacing-2xl);">
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
+        @{
+            // Responsive layout handling
+        }
+        
+        <!-- Main Event Info -->
+        <div>
+            <div class="card-modern card-elevated">
                 <img src="@(Model.ImagePath ?? "/images/events/img1_workshop.png")" 
                      alt="@Model.Name" 
                      class="card-img-top" 
-                     style="object-fit: cover; height: 300px;" />
+                     style="object-fit: cover; height: 320px; width: 100%;" 
+                     onerror="this.src='/images/events/img1_workshop.png'" />
                 <div class="card-body">
-                    <h3 class="card-title">@Model.Name</h3>
-                    <p class="card-text text-muted">@Model.Description</p>
+                    <h2 class="mb-3">@Model.Name</h2>
+                    <p class="text-muted" style="line-height: 1.6;">@Model.Description</p>
                     
-                    <!-- Event Meta -->
-                    <dl class="row mb-0">
-                        <dt class="col-sm-5">📅 Event Date:</dt>
-                        <dd class="col-sm-7"><strong>@Model.EventDate.ToString("dddd, dd MMMM yyyy HH:mm")</strong></dd>
-                        
-                        <dt class="col-sm-5">👥 Capacity:</dt>
-                        <dd class="col-sm-7"><strong>@Model.Capacity participants</strong></dd>
-                        
-                        @{
-                            int registered = Model.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
-                        }
-                        <dt class="col-sm-5">✅ Registered:</dt>
-                        <dd class="col-sm-7">
-                            <strong class="text-success">@registered / @Model.Capacity</strong>
-                            <div class="progress" style="height: 20px;">
+                    <!-- Event Details -->
+                    <div style="background: var(--bg-lighter); padding: var(--spacing-lg); border-radius: var(--radius-lg); margin: var(--spacing-lg) 0;">
+                        <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
+                            <div style="font-size: 1.5rem;">📅</div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-dark);">Event Date & Time</div>
+                                <div style="color: var(--text-muted);">@Model.EventDate.ToString("dddd, dd MMMM yyyy HH:mm")</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--spacing-lg);">
+                            <div style="font-size: 1.5rem;">👥</div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--text-dark);">Capacity & Registration</div>
                                 @{
+                                    int registered = Model.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
                                     int capacity = Model.Capacity > 0 ? Model.Capacity : 1;
                                     int percentage = (int)((registered * 100) / capacity);
                                 }
-                                <div class="progress-bar bg-success" role="progressbar" 
-                                     style="width: @(percentage)%;" 
-                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
-                                    @(percentage)%
+                                <div style="color: var(--text-muted); margin-bottom: var(--spacing-sm);">
+                                    <strong>@registered</strong> of <strong>@capacity</strong> participants registered
+                                </div>
+                                <div class="progress-bar-custom" style="height: 24px;">
+                                    <div class="progress-bar-fill" style="width: @(percentage)%;">
+                                        @if (percentage > 10)
+                                        {
+                                            <span>@percentage%</span>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </dd>
-                    </dl>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Side Panel -->
-        <div class="col-lg-6">
+        <!-- Venues & Activities -->
+        <div>
             <!-- Venues Card -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0">📍 Venues (@Model.Venues.Count)</h5>
+            <div class="card-modern card-elevated" style="margin-bottom: var(--spacing-lg);">
+                <div style="background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: var(--spacing-lg); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                    <h3 style="margin: 0; color: white; font-size: 1.25rem;">📍 Venues (@Model.Venues.Count)</h3>
                 </div>
                 <div class="card-body">
                     @if (Model.Venues.Count == 0)
@@ -61,32 +83,33 @@
                     }
                     else
                     {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var venue in Model.Venues)
-                            {
-                                <li class="list-group-item">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <img src="@(venue.ImagePath ?? "/images/venues/img1_auditorium.png")" 
-                                             alt="@venue.Name" 
-                                             class="img-thumbnail" 
-                                             style="width: 60px; height: 60px; object-fit: cover;" />
-                                        <div>
-                                            <strong>@venue.Name</strong>
-                                            <p class="text-muted small mb-0">@venue.Address</p>
-                                            <small class="text-primary">Capacity: @venue.Capacity</small>
-                                        </div>
+                        @foreach (var venue in Model.Venues)
+                        {
+                            <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color);">
+                                <div style="flex-shrink: 0;">
+                                    <img src="@(venue.ImagePath ?? "/images/venues/img1_auditorium.png")" 
+                                         alt="@venue.Name" 
+                                         class="img-thumbnail" 
+                                         style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);"
+                                         onerror="this.src='/images/venues/img1_auditorium.png'" />
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <h5 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">@venue.Name</h5>
+                                    <p style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-muted); font-size: 0.9rem;">📍 @venue.Address</p>
+                                    <div class="event-meta-badge" style="display: inline-block; background: var(--bg-lighter); color: var(--text-dark);">
+                                        👥 Capacity: @venue.Capacity
                                     </div>
-                                </li>
-                            }
-                        </ul>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
             </div>
 
             <!-- Activities Card -->
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">
-                    <h5 class="mb-0">🎯 Activities (@Model.Activities.Count)</h5>
+            <div class="card-modern card-elevated">
+                <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: var(--spacing-lg); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
+                    <h3 style="margin: 0; color: white; font-size: 1.25rem;">🎯 Activities (@Model.Activities.Count)</h3>
                 </div>
                 <div class="card-body">
                     @if (Model.Activities.Count == 0)
@@ -95,23 +118,23 @@
                     }
                     else
                     {
-                        <ul class="list-group list-group-flush">
-                            @foreach (var activity in Model.Activities)
-                            {
-                                <li class="list-group-item">
-                                    <div class="d-flex align-items-start gap-3">
-                                        <img src="@(activity.ImagePath ?? "/images/activities/img1_talk.png")" 
-                                             alt="@activity.Name" 
-                                             class="img-thumbnail" 
-                                             style="width: 60px; height: 60px; object-fit: cover;" />
-                                        <div>
-                                            <strong>@activity.Name</strong>
-                                            <p class="text-muted small mb-0">Type: <span class="badge bg-info">@activity.Type</span></p>
-                                        </div>
-                                    </div>
-                                </li>
-                            }
-                        </ul>
+                        @foreach (var activity in Model.Activities)
+                        {
+                            <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color);">
+                                <div style="flex-shrink: 0;">
+                                    <img src="@(activity.ImagePath ?? "/images/activities/img1_talk.png")" 
+                                         alt="@activity.Name" 
+                                         class="img-thumbnail" 
+                                         style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);"
+                                         onerror="this.src='/images/activities/img1_talk.png'" />
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <h5 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">@activity.Name</h5>
+                                    <p style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-muted); font-size: 0.9rem;">@activity.Description</p>
+                                    <div class="badge-modern badge-info">@activity.Type</div>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
             </div>
@@ -119,42 +142,42 @@
     </div>
 
     <!-- Action Buttons -->
-    <div class="mt-4 d-flex gap-2">
-        <a asp-action="Index" class="btn btn-secondary">
+    <div style="display: flex; gap: var(--spacing-lg); margin-top: var(--spacing-2xl); margin-bottom: var(--spacing-2xl); flex-wrap: wrap;">
+        <a asp-action="Index" class="btn-secondary-modern">
             ← Back to Events
         </a>
         @if (Context.Session.CurrentUserRole() == "Participant")
         {
-            <form asp-controller="Registrations" asp-action="Register" method="post" class="d-inline">
+            <form asp-controller="Registrations" asp-action="Register" method="post" style="display: contents;">
                 @Html.AntiForgeryToken()
                 <input type="hidden" name="eventId" value="@Model.EventId" />
-                <button type="submit" class="btn btn-success">✅ Register for This Event</button>
+                <button type="submit" class="btn-success-modern">
+                    ✅ Register for This Event
+                </button>
             </form>
         }
     </div>
 </div>
 
+<!-- Responsive Design -->
 <style>
-    .card {
-        border: none;
+    @@media (max-width: 1024px) {
+        div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
     }
 
-    .card-header {
-        font-weight: 600;
+    .card-img-top {
+        animation: fadeIn 0.5s ease-in-out;
     }
 
-    .list-group-item {
-        border-left: 3px solid transparent;
-        transition: all 0.3s ease;
-    }
-
-    .list-group-item:hover {
-        border-left-color: #007bff;
-        background-color: #f8f9fa;
-    }
-
-    .img-thumbnail {
-        border: 1px solid #dee2e6;
-        border-radius: 0.5rem;
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
     }
 </style>
+

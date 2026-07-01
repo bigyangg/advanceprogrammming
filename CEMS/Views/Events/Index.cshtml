@@ -3,106 +3,162 @@
     ViewData["Title"] = "Upcoming Events";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-4">📅 Upcoming Events</h2>
+<!-- Link to new theme CSS -->
+<link rel="stylesheet" href="~/css/cems-theme.css" />
 
-    <!-- Filter Section -->
-    <div class="card mb-4 shadow-sm">
-        <div class="card-body">
-            <form asp-action="Index" method="get">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label"><strong>Date</strong></label>
-                        <input type="date" name="date" value="@(Model.Date?.ToString("yyyy-MM-dd"))" class="form-control" />
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label"><strong>Venue</strong></label>
-                        <select name="venueId" class="form-select" asp-items="Model.Venues">
-                            <option value="">-- All Venues --</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label"><strong>Activity</strong></label>
-                        <select name="activityId" class="form-select" asp-items="Model.Activities">
-                            <option value="">-- All Activities --</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3 d-flex align-items-end gap-2">
-                        <button type="submit" class="btn btn-primary w-100">🔍 Filter</button>
-                        <a asp-action="Index" class="btn btn-outline-secondary">↺ Reset</a>
-                    </div>
+<!-- Page Header -->
+<div class="page-header">
+    <div class="container">
+        <h1>📅 Upcoming Events</h1>
+        <p>Discover and register for amazing events happening near you</p>
+    </div>
+</div>
+
+<div class="container" style="margin-top: var(--spacing-2xl);">
+    
+    <!-- Filters Section -->
+    <div class="filter-card">
+        <form asp-action="Index" method="get">
+            <div class="filter-group">
+                <div class="form-group-modern">
+                    <label for="date-filter">📅 Event Date</label>
+                    <input type="date" 
+                           id="date-filter"
+                           name="date" 
+                           value="@(Model.Date?.ToString("yyyy-MM-dd"))" 
+                           class="form-control" />
                 </div>
-            </form>
-        </div>
+                
+                <div class="form-group-modern">
+                    <label for="venue-filter">📍 Venue</label>
+                    <select id="venue-filter" name="venueId" class="form-select" asp-items="Model.Venues">
+                        <option value="">-- All Venues --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group-modern">
+                    <label for="activity-filter">🎯 Activity Type</label>
+                    <select id="activity-filter" name="activityId" class="form-select" asp-items="Model.Activities">
+                        <option value="">-- All Activities --</option>
+                    </select>
+                </div>
+                
+                <div class="filter-buttons">
+                    <button type="submit" class="btn-primary-modern" style="flex: 1;">
+                        🔍 Filter Events
+                    </button>
+                    <a asp-action="Index" class="btn-secondary-modern" style="flex: 1; text-align: center;">
+                        ↺ Reset
+                    </a>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <!-- Events Grid -->
-    @if (Model.Events.Count == 0)
+    <!-- Events Section -->
+    @if (Model.Events.Count() == 0)
     {
-        <div class="alert alert-info text-center" role="alert">
-            <h5>No events found.</h5>
-            <p>Try adjusting your filters or check back later!</p>
+        <div class="empty-state animate-fade-in">
+            <div class="empty-state-icon">📭</div>
+            <h3>No events found</h3>
+            <p>We couldn't find any events matching your filters. Try adjusting your search criteria or check back later for new events!</p>
+            <a asp-action="Index" class="btn-primary-modern">Browse All Events</a>
         </div>
     }
     else
     {
-        <div class="row g-4">
+        <div style="margin-bottom: var(--spacing-lg);">
+            <p style="color: var(--text-muted); font-size: 0.95rem;">
+                <strong>@Model.Events.Count()</strong> event(s) found
+            </p>
+        </div>
+
+        <div class="grid-events">
             @foreach (var item in Model.Events)
             {
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm event-card hover-lift">
-                        <!-- Event Image -->
-                        <div class="position-relative overflow-hidden" style="height: 200px;">
-                            <img src="@(item.ImagePath ?? "/images/events/img1_workshop.png")" 
-                                 alt="@item.Name" 
-                                 class="card-img-top img-fluid" 
-                                 style="object-fit: cover; width: 100%; height: 100%;" />
-                            <div class="position-absolute top-0 start-0 m-2">
-                                <span class="badge bg-primary">@item.EventDate.ToString("dd MMM")</span>
+                <div class="event-card animate-fade-in">
+                    <!-- Event Image Section -->
+                    <div class="event-card-image">
+                        <img src="@(item.ImagePath ?? "/images/events/img1_workshop.png")" 
+                             alt="@item.Name" 
+                             loading="lazy"
+                             onerror="this.src='/images/events/img1_workshop.png'" />
+                        <span class="event-card-badge date-badge">
+                            @item.EventDate.ToString("dd MMM")
+                        </span>
+                    </div>
+
+                    <!-- Card Body -->
+                    <div class="event-card-body">
+                        <!-- Title -->
+                        <h3 class="event-card-title">@item.Name</h3>
+                        
+                        <!-- Description -->
+                        <p class="event-card-description">@item.Description</p>
+                        
+                        <!-- Event Metadata -->
+                        <div class="event-meta">
+                            <div class="event-meta-item">
+                                <span>📍</span>
+                                <span class="event-meta-badge">
+                                    @item.Venues.Count venue@(item.Venues.Count != 1 ? "s" : "")
+                                </span>
+                            </div>
+                            <div class="event-meta-item">
+                                <span>🎯</span>
+                                <span class="event-meta-badge">
+                                    @item.Activities.Count activit@(item.Activities.Count != 1 ? "ies" : "y")
+                                </span>
                             </div>
                         </div>
 
-                        <!-- Event Details -->
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title">@item.Name</h5>
-                            <p class="card-text text-muted small">@item.Description</p>
-                            
-                            <!-- Event Meta -->
-                            <div class="mb-3">
-                                <div class="d-flex align-items-center gap-2 mb-2">
-                                    <span class="badge bg-light text-dark">📍 @item.Venues.Count venue(s)</span>
-                                    <span class="badge bg-light text-dark">🎯 @item.Activities.Count activity(ies)</span>
-                                </div>
-                                <div class="progress mb-2" style="height: 20px;">
-                                    @{
-                                        int registered = item.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
-                                        int capacity = item.Capacity > 0 ? item.Capacity : 1;
-                                        int percentage = (int)((registered * 100) / capacity);
+                        <!-- Capacity Progress -->
+                        <div class="event-capacity">
+                            @{
+                                int registered = item.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
+                                int capacity = item.Capacity > 0 ? item.Capacity : 1;
+                                int percentage = (int)((registered * 100) / capacity);
+                            }
+                            <div class="capacity-label">
+                                <span>👥 Registrations</span>
+                                <span style="font-weight: 700; color: var(--text-dark);">
+                                    @registered / @capacity
+                                    <span style="color: var(--text-muted); font-weight: 500;">(@percentage%)</span>
+                                </span>
+                            </div>
+                            <div class="progress-bar-custom">
+                                <div class="progress-bar-fill" style="width: @(percentage)%;">
+                                    @if (percentage > 10)
+                                    {
+                                        <span>@percentage%</span>
                                     }
-                                    <div class="progress-bar bg-success" role="progressbar" 
-                                         style="width: @(percentage)%;" 
-                                         aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
-                                        @registered / @capacity
-                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <!-- Action Buttons -->
-                            <div class="d-grid gap-2 mt-auto">
-                                <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-sm btn-outline-primary">
-                                    👁️ View Details
-                                </a>
-                                @if (Context.Session.CurrentUserRole() == "Participant")
-                                {
-                                    <form asp-controller="Registrations" asp-action="Register" method="post">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="eventId" value="@item.EventId" />
-                                        <button type="submit" class="btn btn-sm btn-success">
-                                            ✅ Register Now
-                                        </button>
-                                    </form>
-                                }
-                            </div>
+                        <!-- Action Buttons -->
+                        <div class="event-actions">
+                            <a asp-action="Details" 
+                               asp-route-id="@item.EventId" 
+                               class="btn-secondary-modern" 
+                               style="text-align: center; padding: var(--spacing-sm) var(--spacing-md); font-size: 0.9rem;">
+                                👁️ Details
+                            </a>
+                            @if (Context.Session.CurrentUserRole() == "Participant")
+                            {
+                                <form asp-controller="Registrations" 
+                                      asp-action="Register" 
+                                      method="post"
+                                      style="display: contents;">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="eventId" value="@item.EventId" />
+                                    <button type="submit" 
+                                            class="btn-success-modern"
+                                            style="padding: var(--spacing-sm) var(--spacing-md); font-size: 0.9rem;">
+                                        ✅ Register
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
@@ -112,16 +168,42 @@
 </div>
 
 <style>
+    /* Page-specific overrides */
+    .filter-card {
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
     .event-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        animation: fadeIn 0.4s ease-in-out;
     }
 
-    .event-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    /* Stagger animation for cards */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
-    .hover-lift {
-        cursor: pointer;
+    .event-card:nth-child(2) { animation-delay: 50ms; }
+    .event-card:nth-child(3) { animation-delay: 100ms; }
+    .event-card:nth-child(4) { animation-delay: 150ms; }
+    .event-card:nth-child(5) { animation-delay: 200ms; }
+    .event-card:nth-child(6) { animation-delay: 250ms; }
+    .event-card:nth-child(n+7) { animation-delay: 300ms; }
+
+    /* Loading state animation */
+    @@keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    .event-card.loading {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
 </style>
+

@@ -14,8 +14,8 @@ namespace CEMS.Models
         [StringLength(500)]
         public string Description { get; set; } = string.Empty;
 
-        [StringLength(255)]
-        public string? ImagePath { get; set; } = "/images/activities/img1_talk.png";
+        [StringLength(500)]
+        public string? ImagePath { get; set; }
 
         // Many-to-many navigation
         public List<Event> Events { get; set; } = new();

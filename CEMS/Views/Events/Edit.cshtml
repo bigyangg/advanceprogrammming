@@ -1,0 +1,44 @@
+@model EventFormViewModel
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<h2>Edit Event</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="EventId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="EventDate" class="form-label"></label>
+        <input asp-for="EventDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="EventDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Capacity" class="form-label"></label>
+        <input asp-for="Capacity" class="form-control" />
+        <span asp-validation-for="Capacity" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Venues</label>
+        <select asp-for="SelectedVenueIds" asp-items="ViewBag.Venues" class="form-select" multiple></select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Activities</label>
+        <select asp-for="SelectedActivityIds" asp-items="ViewBag.Activities" class="form-select" multiple></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    <a asp-action="AdminIndex" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

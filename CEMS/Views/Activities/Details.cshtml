@@ -1,0 +1,8 @@
+@model Activity
+@{
+    ViewData["Title"] = "Activity Details";
+}
+<h2>@Model.Name</h2>
+<p><strong>Type:</strong> @Model.Type</p>
+<p><strong>Description:</strong> @Model.Description</p>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

@@ -1,0 +1,38 @@
+@model IEnumerable<Registration>
+@{
+    ViewData["Title"] = "My Registrations";
+}
+
+<h2>My Registrations</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Registered On</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Event?.Name</td>
+                <td>@item.Event?.EventDate</td>
+                <td>@item.RegistrationDate</td>
+                <td>@item.Status</td>
+                <td>
+                    @if (item.Status != RegistrationStatus.Cancelled)
+                    {
+                        <form asp-action="Cancel" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="registrationId" value="@item.RegistrationId" />
+                            <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

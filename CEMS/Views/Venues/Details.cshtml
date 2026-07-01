@@ -1,0 +1,8 @@
+@model Venue
+@{
+    ViewData["Title"] = "Venue Details";
+}
+<h2>@Model.Name</h2>
+<p><strong>Address:</strong> @Model.Address</p>
+<p><strong>Capacity:</strong> @Model.Capacity</p>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

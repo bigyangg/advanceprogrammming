@@ -1,0 +1,44 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    var participants = ViewBag.Participants as IEnumerable<Participant> ?? [];
+    var administrators = ViewBag.Administrators as IEnumerable<Administrator> ?? [];
+}
+
+<h2>Login (Demo Session-Based)</h2>
+<p>Enter a valid Person ID to act as that user.</p>
+
+<form asp-action="Login" method="post" class="mb-4">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="PersonId" class="form-label"></label>
+        <input asp-for="PersonId" class="form-control" />
+        <span asp-validation-for="PersonId" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Participants</h4>
+        <ul>
+            @foreach (var p in participants)
+            {
+                <li>ID @p.PersonId - @p.Name</li>
+            }
+        </ul>
+    </div>
+    <div class="col-md-6">
+        <h4>Administrators</h4>
+        <ul>
+            @foreach (var a in administrators)
+            {
+                <li>ID @a.PersonId - @a.Name</li>
+            }
+        </ul>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

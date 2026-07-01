@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CEMS", "CEMS\CEMS.csproj", "{97F66F4F-05D1-46F3-9192-E22EA99D2052}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CEMS.Tests", "CEMS.Tests\CEMS.Tests.csproj", "{DE5150B8-6079-4956-B780-8BC9503E02FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{97F66F4F-05D1-46F3-9192-E22EA99D2052}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97F66F4F-05D1-46F3-9192-E22EA99D2052}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97F66F4F-05D1-46F3-9192-E22EA99D2052}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97F66F4F-05D1-46F3-9192-E22EA99D2052}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE5150B8-6079-4956-B780-8BC9503E02FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE5150B8-6079-4956-B780-8BC9503E02FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE5150B8-6079-4956-B780-8BC9503E02FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE5150B8-6079-4956-B780-8BC9503E02FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

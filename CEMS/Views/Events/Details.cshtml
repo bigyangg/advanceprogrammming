@@ -1,0 +1,160 @@
+@model Event
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Event Image & Main Info -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm mb-4">
+                <img src="@(Model.ImagePath ?? "/images/events/img1_workshop.png")" 
+                     alt="@Model.Name" 
+                     class="card-img-top" 
+                     style="object-fit: cover; height: 300px;" />
+                <div class="card-body">
+                    <h3 class="card-title">@Model.Name</h3>
+                    <p class="card-text text-muted">@Model.Description</p>
+                    
+                    <!-- Event Meta -->
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">📅 Event Date:</dt>
+                        <dd class="col-sm-7"><strong>@Model.EventDate.ToString("dddd, dd MMMM yyyy HH:mm")</strong></dd>
+                        
+                        <dt class="col-sm-5">👥 Capacity:</dt>
+                        <dd class="col-sm-7"><strong>@Model.Capacity participants</strong></dd>
+                        
+                        @{
+                            int registered = Model.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
+                        }
+                        <dt class="col-sm-5">✅ Registered:</dt>
+                        <dd class="col-sm-7">
+                            <strong class="text-success">@registered / @Model.Capacity</strong>
+                            <div class="progress" style="height: 20px;">
+                                @{
+                                    int capacity = Model.Capacity > 0 ? Model.Capacity : 1;
+                                    int percentage = (int)((registered * 100) / capacity);
+                                }
+                                <div class="progress-bar bg-success" role="progressbar" 
+                                     style="width: @(percentage)%;" 
+                                     aria-valuenow="@percentage" aria-valuemin="0" aria-valuemax="100">
+                                    @(percentage)%
+                                </div>
+                            </div>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="col-lg-6">
+            <!-- Venues Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">📍 Venues (@Model.Venues.Count)</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Venues.Count == 0)
+                    {
+                        <p class="text-muted mb-0">No venues assigned yet.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var venue in Model.Venues)
+                            {
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <img src="@(venue.ImagePath ?? "/images/venues/img1_auditorium.png")" 
+                                             alt="@venue.Name" 
+                                             class="img-thumbnail" 
+                                             style="width: 60px; height: 60px; object-fit: cover;" />
+                                        <div>
+                                            <strong>@venue.Name</strong>
+                                            <p class="text-muted small mb-0">@venue.Address</p>
+                                            <small class="text-primary">Capacity: @venue.Capacity</small>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+
+            <!-- Activities Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">🎯 Activities (@Model.Activities.Count)</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Activities.Count == 0)
+                    {
+                        <p class="text-muted mb-0">No activities assigned yet.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var activity in Model.Activities)
+                            {
+                                <li class="list-group-item">
+                                    <div class="d-flex align-items-start gap-3">
+                                        <img src="@(activity.ImagePath ?? "/images/activities/img1_talk.png")" 
+                                             alt="@activity.Name" 
+                                             class="img-thumbnail" 
+                                             style="width: 60px; height: 60px; object-fit: cover;" />
+                                        <div>
+                                            <strong>@activity.Name</strong>
+                                            <p class="text-muted small mb-0">Type: <span class="badge bg-info">@activity.Type</span></p>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-4 d-flex gap-2">
+        <a asp-action="Index" class="btn btn-secondary">
+            ← Back to Events
+        </a>
+        @if (Context.Session.CurrentUserRole() == "Participant")
+        {
+            <form asp-controller="Registrations" asp-action="Register" method="post" class="d-inline">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="eventId" value="@Model.EventId" />
+                <button type="submit" class="btn btn-success">✅ Register for This Event</button>
+            </form>
+        }
+    </div>
+</div>
+
+<style>
+    .card {
+        border: none;
+    }
+
+    .card-header {
+        font-weight: 600;
+    }
+
+    .list-group-item {
+        border-left: 3px solid transparent;
+        transition: all 0.3s ease;
+    }
+
+    .list-group-item:hover {
+        border-left-color: #007bff;
+        background-color: #f8f9fa;
+    }
+
+    .img-thumbnail {
+        border: 1px solid #dee2e6;
+        border-radius: 0.5rem;
+    }
+</style>

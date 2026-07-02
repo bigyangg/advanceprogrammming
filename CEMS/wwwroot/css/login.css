@@ -109,12 +109,6 @@
   background: var(--line);
 }
 
-.auth-registers {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-}
-
 .auth-register-heading {
   display: flex;
   align-items: baseline;
@@ -131,6 +125,105 @@
 
 .auth-register-heading .role-badge {
   color: var(--ochre);
+}
+
+/* ---- Participant/Admin tab toggle: pure CSS, no JS ---- */
+.auth-tabs {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.auth-tab-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.auth-tab-list {
+  display: inline-flex;
+  gap: 0.25rem;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-tab {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.auth-tab:hover {
+  color: var(--ink);
+}
+
+.auth-tab-panel {
+  display: none;
+}
+
+#tab-participant:checked ~ .auth-tab-list label[for="tab-participant"],
+#tab-admin:checked ~ .auth-tab-list label[for="tab-admin"] {
+  background: var(--forest);
+  color: #fff;
+}
+
+#tab-participant:checked ~ .auth-tab-panel--participant,
+#tab-admin:checked ~ .auth-tab-panel--admin {
+  display: block;
+}
+
+/* ---- Create-account disclosure inside the Participant tab ---- */
+.auth-signup {
+  margin-top: 1.25rem;
+  border-top: 1px dashed var(--line-strong);
+  padding-top: 1.1rem;
+}
+
+.auth-signup summary {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--forest);
+  cursor: pointer;
+  list-style: none;
+}
+
+.auth-signup summary::-webkit-details-marker {
+  display: none;
+}
+
+.auth-signup summary::before {
+  content: "+ ";
+}
+
+.auth-signup[open] summary::before {
+  content: "\2212 ";
+}
+
+.auth-signup-form {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.auth-signup-form .form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
 }
 
 .account-row {
@@ -186,12 +279,17 @@
 }
 
 @media (max-width: 700px) {
-  .auth-registers {
-    grid-template-columns: 1fr;
-  }
-
   .auth-form-row {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .auth-tab-list {
+    width: 100%;
+  }
+
+  .auth-tab {
+    flex: 1;
+    text-align: center;
   }
 }

@@ -10,7 +10,10 @@ public class EventFilterService(IUnitOfWork unitOfWork) : IEventFilterService
     {
         // Compose the query conditionally so EF emits one SQL query with only needed WHERE clauses,
         // and ORDER BY is also pushed to SQL rather than sorting in memory.
-        IQueryable<Event> query = unitOfWork.Events.Query();
+        IQueryable<Event> query = unitOfWork.Events.Query()
+            .Include(e => e.Venues)
+            .Include(e => e.Activities)
+            .Include(e => e.Registrations);
 
         if (date.HasValue)
         {
@@ -37,6 +40,9 @@ public class EventFilterService(IUnitOfWork unitOfWork) : IEventFilterService
     {
         var now = DateTime.UtcNow;
         return await unitOfWork.Events.Query()
+            .Include(e => e.Venues)
+            .Include(e => e.Activities)
+            .Include(e => e.Registrations)
             .Where(e => e.EventDate >= now)
             .OrderBy(e => e.EventDate)
             .ToListAsync();

@@ -16,4 +16,10 @@ public interface IUnitOfWork
     IRepository<Administrator> Administrators { get; }
     IRepository<Registration> Registrations { get; }
     Task<int> SaveChangesAsync();
+
+    /// <summary>
+    /// Runs <paramref name="operation"/> inside a database transaction, committing on success
+    /// and rolling back if it throws. Used to close read-then-write races (e.g. capacity checks).
+    /// </summary>
+    Task<T> ExecuteInTransactionAsync<T>(Func<Task<T>> operation);
 }

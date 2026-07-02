@@ -6,7 +6,7 @@ namespace CEMS.Models.Interfaces
     /// </summary>
     public interface IRegistrable
     {
-        void Register(Event e);
+        void Register(Event e, int seats = 1);
         void CancelRegistration(Event e);
     }
 }

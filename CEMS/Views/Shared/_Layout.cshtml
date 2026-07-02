@@ -31,7 +31,7 @@
                         @if (Context.Session.CurrentUserRole() == "Participant")
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Registrations" asp-action="MyRegistrations">My Registrations</a>
+                                <a class="nav-link" asp-controller="Registrations" asp-action="Profile">My Profile</a>
                             </li>
                         }
                         @if (Context.Session.CurrentUserRole() == "Administrator")

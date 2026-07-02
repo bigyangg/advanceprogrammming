@@ -3,10 +3,28 @@
     ViewData["Title"] = "Delete Event";
 }
 
-<h2>Delete Event</h2>
-<p>Are you sure you want to delete <strong>@Model.Name</strong>?</p>
+<link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+
+<div class="page-header">
+    <span class="page-eyebrow">Admin</span>
+    <h1>Delete Event</h1>
+    <p>This will also remove every registration booked against it. This can't be undone.</p>
+</div>
+
+<div class="registry" style="max-width: 640px; margin-bottom: 1.5rem;">
+    <div class="registry-entry">
+        <span class="registry-tag">Cap. @Model.Capacity</span>
+        <div class="registry-body">
+            <h3>@Model.Name</h3>
+            <p>@Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")</p>
+        </div>
+    </div>
+</div>
+
 <form asp-action="Delete" method="post">
     <input type="hidden" asp-for="EventId" />
-    <button type="submit" class="btn btn-danger">Delete</button>
-    <a asp-action="AdminIndex" class="btn btn-secondary">Cancel</a>
+    <div class="details-actions">
+        <button type="submit" class="btn btn-danger">Delete</button>
+        <a asp-action="AdminIndex" class="btn btn-outline-secondary">Cancel</a>
+    </div>
 </form>

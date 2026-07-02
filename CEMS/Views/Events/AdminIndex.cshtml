@@ -1,37 +1,94 @@
 @model IEnumerable<Event>
 @{
     ViewData["Title"] = "Manage Events";
+    var events = Model.ToList();
+    var now = DateTime.UtcNow;
+    int totalEvents = events.Count;
+    int upcomingEvents = events.Count(e => e.EventDate >= now);
+    int totalSeatsBooked = events.Sum(e => e.Registrations.Where(r => r.Status != RegistrationStatus.Cancelled).Sum(r => r.Seats));
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Manage Events</h2>
+<link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+
+<div class="page-header">
+    <span class="page-eyebrow">Admin</span>
+    <h1>Manage Events</h1>
+    <p>Create, edit and review registrations for every event on the calendar.</p>
+</div>
+
+<div class="stat-row">
+    <div class="stat-card">
+        <div class="stat-card-label">Total events</div>
+        <div class="stat-card-value">@totalEvents</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">Upcoming events</div>
+        <div class="stat-card-value">@upcomingEvents</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-card-label">Seats booked</div>
+        <div class="stat-card-value">@totalSeatsBooked</div>
+    </div>
+</div>
+
+<div class="details-actions" style="margin-top: -1rem; margin-bottom: 1.5rem;">
     <a asp-action="Create" class="btn btn-primary">Create Event</a>
 </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Venues</th>
-            <th>Activities</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden;">
+    <table class="table" style="margin-bottom: 0;">
+        <thead>
             <tr>
-                <td>@item.Name</td>
-                <td>@item.EventDate</td>
-                <td>@string.Join(", ", item.Venues.Select(v => v.Name))</td>
-                <td>@string.Join(", ", item.Activities.Select(a => a.Name))</td>
-                <td class="d-flex gap-2">
-                    <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-sm btn-outline-primary">Details</a>
-                    <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-sm btn-outline-warning">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-sm btn-outline-danger">Delete</a>
-                </td>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Venues</th>
+                <th>Activities</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in events)
+            {
+                var pendingCount = item.Registrations.Count(r => r.Status == RegistrationStatus.Pending);
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.EventDate.ToString("dd MMM yyyy, HH:mm")</td>
+                    <td>
+                        @if (item.Venues.Count == 0)
+                        {
+                            <span class="meta-tag">No venues</span>
+                        }
+                        else
+                        {
+                            @foreach (var venue in item.Venues)
+                            {
+                                <span class="meta-tag">@venue.Name</span>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @if (item.Activities.Count == 0)
+                        {
+                            <span class="meta-tag">No activities</span>
+                        }
+                        else
+                        {
+                            @foreach (var activity in item.Activities)
+                            {
+                                <span class="meta-tag">@activity.Name</span>
+                            }
+                        }
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-outline-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Details</a>
+                        <a asp-action="Registrations" asp-route-id="@item.EventId" class="btn btn-outline-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">
+                            Registrations@(pendingCount > 0 ? $" ({pendingCount} pending)" : "")
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-outline-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

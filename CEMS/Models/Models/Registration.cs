@@ -14,6 +14,8 @@ namespace CEMS.Models
         public DateTime RegistrationDate { get; set; }
         [Required]
         public RegistrationStatus Status { get; set; } = RegistrationStatus.Pending;
+        [Range(1, int.MaxValue, ErrorMessage = "Seats must be at least 1.")]
+        public int Seats { get; set; } = 1;
 
         public int ParticipantId { get; set; }
         public Participant? Participant { get; set; }

@@ -1,3 +1,4 @@
+using CEMS.Exceptions;
 using CEMS.Filters;
 using CEMS.Models;
 using CEMS.Repositories;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CEMS.Controllers;
 
-public class EventsController(IUnitOfWork unitOfWork, IEventFilterService eventFilterService) : Controller
+public class EventsController(IUnitOfWork unitOfWork, IEventFilterService eventFilterService, IRegistrationService registrationService) : Controller
 {
     public async Task<IActionResult> Index(DateTime? date, int? venueId, int? activityId)
     {
@@ -49,9 +50,39 @@ public class EventsController(IUnitOfWork unitOfWork, IEventFilterService eventF
         var events = await unitOfWork.Events.Query()
             .Include(e => e.Venues)
             .Include(e => e.Activities)
+            .Include(e => e.Registrations)
             .OrderBy(e => e.EventDate)
             .ToListAsync();
         return View(events);
+    }
+
+    [RequireRole("Administrator")]
+    public async Task<IActionResult> Registrations(int id)
+    {
+        var evt = await unitOfWork.Events.Query()
+            .Include(e => e.Registrations)
+            .ThenInclude(r => r.Participant)
+            .FirstOrDefaultAsync(e => e.EventId == id);
+        if (evt is null) return NotFound();
+        return View(evt);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [RequireRole("Administrator")]
+    public async Task<IActionResult> ConfirmRegistration(int registrationId, int eventId)
+    {
+        try
+        {
+            await registrationService.ConfirmAsync(registrationId);
+            TempData["FlashSuccess"] = "Registration confirmed.";
+        }
+        catch (CEMSException ex)
+        {
+            TempData["FlashError"] = ex.Message;
+        }
+
+        return RedirectToAction(nameof(Registrations), new { id = eventId });
     }
 
     [RequireRole("Administrator")]

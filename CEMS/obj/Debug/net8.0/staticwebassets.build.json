@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ybTR4ez24tO3scBUbz+bm6kclu5IBUIuR1FA1e/F/Ik=",
+  "Hash": "q4IkFsW1FvMtr8BTTCiWCGAnQoF1q6bebMYLLs/6QWM=",
   "Source": "CEMS",
   "BasePath": "_content/CEMS",
   "Mode": "Default",
@@ -129,6 +129,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\ticket.css",
+      "SourceId": "CEMS",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\",
+      "BasePath": "_content/CEMS",
+      "RelativePath": "css/ticket.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\ticket.css"
     },
     {
       "Identity": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\favicon.ico",

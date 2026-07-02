@@ -1,9 +1,10 @@
 @model Event
 @{
     ViewData["Title"] = "Event Details";
-    int registered = Model.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
+    int registered = Model.Registrations.Where(r => r.Status != RegistrationStatus.Cancelled).Sum(r => r.Seats);
     int capacity = Model.Capacity > 0 ? Model.Capacity : 1;
     int percentage = Math.Min(100, (int)((registered * 100) / capacity));
+    int seatsLeft = Math.Max(0, capacity - registered);
 }
 
 <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
@@ -39,11 +40,20 @@
             <a asp-action="Index" class="btn btn-outline-secondary">Back to events</a>
             @if (Context.Session.CurrentUserRole() == "Participant")
             {
-                <form asp-controller="Registrations" asp-action="Register" method="post" style="display: contents;">
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" name="eventId" value="@Model.EventId" />
-                    <button type="submit" class="btn btn-primary">Register for this event</button>
-                </form>
+                @if (seatsLeft > 0)
+                {
+                    <form asp-controller="Registrations" asp-action="Register" method="post" style="display: flex; gap: 0.5rem; align-items: center;">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="eventId" value="@Model.EventId" />
+                        <label for="seats-input" style="font-size: 0.9rem;">Seats</label>
+                        <input id="seats-input" type="number" name="seats" value="1" min="1" max="@seatsLeft" class="form-control" style="width: 5rem;" />
+                        <button type="submit" class="btn btn-primary">Book Event</button>
+                    </form>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-primary" disabled>Fully booked</button>
+                }
             }
         </div>
     </div>

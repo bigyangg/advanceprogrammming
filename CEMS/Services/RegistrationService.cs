@@ -7,8 +7,13 @@ namespace CEMS.Services;
 
 public class RegistrationService(IUnitOfWork unitOfWork) : IRegistrationService
 {
-    public async Task<Registration> RegisterAsync(int participantId, int eventId)
+    public async Task<Registration> RegisterAsync(int participantId, int eventId, int seats = 1)
     {
+        if (seats < 1)
+        {
+            throw new InvalidRegistrationStateException("You must book at least 1 seat.");
+        }
+
         var participant = await unitOfWork.Participants.GetByIdAsync(participantId);
         if (participant is null)
         {
@@ -24,35 +29,40 @@ public class RegistrationService(IUnitOfWork unitOfWork) : IRegistrationService
         var targetEvent = await unitOfWork.Events.GetByIdAsync(eventId)
             ?? throw new EntityNotFoundException($"Event with ID {eventId} was not found.");
 
-        var hasActiveRegistration = await unitOfWork.Registrations.Query().AnyAsync(r =>
-            r.ParticipantId == participantId &&
-            r.EventId == eventId &&
-            r.Status != RegistrationStatus.Cancelled);
-
-        if (hasActiveRegistration)
+        // Wrap the duplicate/capacity check and the write in one transaction so a concurrent
+        // RegisterAsync call can't read the same pre-write seat count and jointly overbook the event.
+        return await unitOfWork.ExecuteInTransactionAsync(async () =>
         {
-            throw new DuplicateRegistrationException("Participant already has an active registration for this event.");
-        }
+            var hasActiveRegistration = await unitOfWork.Registrations.Query().AnyAsync(r =>
+                r.ParticipantId == participantId &&
+                r.EventId == eventId &&
+                r.Status != RegistrationStatus.Cancelled);
 
-        // Keep capacity check in SQL (COUNT(*)) instead of materializing all rows.
-        var activeRegistrationsCount = await unitOfWork.Registrations.Query().CountAsync(r =>
-            r.EventId == eventId &&
-            r.Status != RegistrationStatus.Cancelled);
+            if (hasActiveRegistration)
+            {
+                throw new DuplicateRegistrationException("Participant already has an active registration for this event.");
+            }
 
-        if (activeRegistrationsCount >= targetEvent.Capacity)
-        {
-            throw new EventCapacityExceededException("This event is already at full capacity.");
-        }
+            // Keep capacity check in SQL (SUM) instead of materializing all rows.
+            var bookedSeats = await unitOfWork.Registrations.Query()
+                .Where(r => r.EventId == eventId && r.Status != RegistrationStatus.Cancelled)
+                .SumAsync(r => (int?)r.Seats) ?? 0;
 
-        // Delegate registration creation to the domain model to keep behavior centralized.
-        participant.Register(targetEvent);
-        var registration = participant.Registrations
-            .OrderByDescending(r => r.RegistrationDate)
-            .First();
+            if (bookedSeats + seats > targetEvent.Capacity)
+            {
+                throw new EventCapacityExceededException($"Only {targetEvent.Capacity - bookedSeats} seat(s) remaining for this event.");
+            }
 
-        targetEvent.SendNotification($"New registration created for participant {participant.Name}.");
-        await unitOfWork.SaveChangesAsync();
-        return registration;
+            // Delegate registration creation to the domain model to keep behavior centralized.
+            participant.Register(targetEvent, seats);
+            var registration = participant.Registrations
+                .OrderByDescending(r => r.RegistrationDate)
+                .First();
+
+            targetEvent.SendNotification($"New registration created for participant {participant.Name}.");
+            await unitOfWork.SaveChangesAsync();
+            return registration;
+        });
     }
 
     public async Task<Registration> CancelAsync(int registrationId)

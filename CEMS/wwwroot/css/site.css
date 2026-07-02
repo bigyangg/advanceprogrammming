@@ -145,6 +145,28 @@ a:hover {
   border: 1px solid #e6b8b3;
 }
 
+/* ---- Form errors (shared by any page rendering its own form, e.g. signup, admin event forms) ---- */
+.form-error-summary {
+  color: #a3312a;
+  background: #fbeceb;
+  border: 1px solid #e6b8b3;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.88rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-error-summary:empty {
+  display: none;
+}
+
+.field-error {
+  display: block;
+  color: #a3312a;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
 /* ---- Status pills (registration status, etc.) ---- */
 .status-pill {
   display: inline-flex;

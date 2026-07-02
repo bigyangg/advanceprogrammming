@@ -1,39 +1,28 @@
-@model IEnumerable<Registration>
+@model Event
 @{
-    ViewData["Title"] = "My Profile";
-    var participant = ViewBag.Participant as Participant;
+    ViewData["Title"] = "Event Registrations";
+    var registrations = Model.Registrations
+        .OrderByDescending(r => r.RegistrationDate)
+        .ToList();
 }
 
 <link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
 
 <div class="page-header">
-    <span class="page-eyebrow">Account</span>
-    <h1>My Profile</h1>
-    <p>Your details and everything you've booked.</p>
+    <span class="page-eyebrow">Admin</span>
+    <h1>Registrations &mdash; @Model.Name</h1>
+    <p>@Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")</p>
 </div>
 
-@if (participant is not null)
-{
-    <div class="registry" style="margin-bottom: 1.5rem;">
-        <p class="registry-heading">Participant details</p>
-        <div class="registry-entry">
-            <span class="registry-tag">ID @participant.PersonId</span>
-            <div class="registry-body">
-                <h3>@participant.Name</h3>
-                <p>@participant.Email &middot; @participant.Phone</p>
-            </div>
-        </div>
-    </div>
-}
+<div class="details-actions" style="margin-top: -1rem; margin-bottom: 1.5rem;">
+    <a asp-action="AdminIndex" class="btn btn-outline-secondary">Back to admin events</a>
+</div>
 
-<h2 style="margin-bottom: 1rem;">My bookings</h2>
-
-@if (!Model.Any())
+@if (registrations.Count == 0)
 {
     <div class="empty-state">
-        <h3>No bookings yet</h3>
-        <p>Once you book an event, it'll show up here.</p>
-        <a asp-controller="Events" asp-action="Index" class="btn btn-primary">Browse upcoming events</a>
+        <h3>No registrations yet</h3>
+        <p>Once participants book this event, they'll show up here.</p>
     </div>
 }
 else
@@ -42,8 +31,7 @@ else
         <table class="table" style="margin-bottom: 0;">
             <thead>
                 <tr>
-                    <th>Event</th>
-                    <th>Event date</th>
+                    <th>Participant</th>
                     <th>Booked on</th>
                     <th>Seats</th>
                     <th>Status</th>
@@ -51,11 +39,10 @@ else
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in registrations)
                 {
                     <tr>
-                        <td>@item.Event?.Name</td>
-                        <td>@item.Event?.EventDate.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>@item.Participant?.Name</td>
                         <td>@item.RegistrationDate.ToString("dd MMM yyyy, HH:mm")</td>
                         <td>@item.Seats</td>
                         <td>
@@ -70,13 +57,13 @@ else
                             <span class="status-pill @pillClass">@item.Status</span>
                         </td>
                         <td style="white-space: nowrap;">
-                            @if (item.Status != RegistrationStatus.Cancelled)
+                            @if (item.Status == RegistrationStatus.Pending)
                             {
-                                <a asp-action="Ticket" asp-route-registrationId="@item.RegistrationId" class="btn btn-outline-secondary" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Generate Ticket</a>
-                                <form asp-action="Cancel" method="post" style="display: inline;">
+                                <form asp-action="ConfirmRegistration" method="post" style="display: inline;">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="registrationId" value="@item.RegistrationId" />
-                                    <button type="submit" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Cancel</button>
+                                    <input type="hidden" name="eventId" value="@Model.EventId" />
+                                    <button type="submit" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Confirm</button>
                                 </form>
                             }
                         </td>

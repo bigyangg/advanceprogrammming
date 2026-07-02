@@ -1,0 +1,65 @@
+@model Registration
+@{
+    Layout = null;
+    var venueNames = Model.Event?.Venues.Count > 0
+        ? string.Join(", ", Model.Event.Venues.Select(v => v.Name))
+        : "TBA";
+    var pillClass = Model.Status switch
+    {
+        RegistrationStatus.Confirmed => "status-pill--confirmed",
+        RegistrationStatus.Cancelled => "status-pill--cancelled",
+        _ => "status-pill--pending",
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Ticket &mdash; @Model.Event?.Name</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/ticket.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="toolbar">
+        <a asp-action="Profile">&larr; Back to profile</a>
+        <button type="button" onclick="window.print()">Print ticket</button>
+    </div>
+
+    <div class="ticket">
+        <div class="ticket-header">
+            <h1>@Model.Event?.Name</h1>
+            <span class="ticket-brand">CEMS Ticket</span>
+        </div>
+
+        <div class="ticket-row">
+            <span class="ticket-label">Ticket holder</span>
+            <span class="ticket-value">@Model.Participant?.Name</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">Event date</span>
+            <span class="ticket-value">@Model.Event?.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">Venue</span>
+            <span class="ticket-value">@venueNames</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">Seats booked</span>
+            <span class="ticket-value">@Model.Seats</span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">Status</span>
+            <span class="ticket-value"><span class="status-pill @pillClass">@Model.Status</span></span>
+        </div>
+        <div class="ticket-row">
+            <span class="ticket-label">Booking reference</span>
+            <span class="ticket-value">#@Model.RegistrationId.ToString("D6")</span>
+        </div>
+
+        <div class="ticket-footer">Present this ticket at the entrance. Booked on @Model.RegistrationDate.ToString("dd MMM yyyy, HH:mm").</div>
+    </div>
+</body>
+</html>

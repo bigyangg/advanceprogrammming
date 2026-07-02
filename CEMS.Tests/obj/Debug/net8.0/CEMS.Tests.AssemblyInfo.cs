@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CEMS.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe9fe083426b1c186661387c5da054fe0a516123")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90539100863e3b3d566fab2b39abf65684bc01be")]
 [assembly: System.Reflection.AssemblyProductAttribute("CEMS.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CEMS.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

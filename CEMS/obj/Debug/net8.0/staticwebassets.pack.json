@@ -5,8 +5,16 @@
       "PackagePath": "staticwebassets\\CEMS.bundle.scp.css"
     },
     {
-      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\cems-theme.css",
-      "PackagePath": "staticwebassets\\css\\cems-theme.css"
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\events.css",
+      "PackagePath": "staticwebassets\\css\\events.css"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\home.css",
+      "PackagePath": "staticwebassets\\css\\home.css"
+    },
+    {
+      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\login.css",
+      "PackagePath": "staticwebassets\\css\\login.css"
     },
     {
       "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\site.css",

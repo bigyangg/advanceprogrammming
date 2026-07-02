@@ -1,0 +1,68 @@
+@model IEnumerable<Registration>
+@{
+    ViewData["Title"] = "My Registrations";
+}
+
+<link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
+
+<div class="page-header">
+    <span class="page-eyebrow">Account</span>
+    <h1>My Registrations</h1>
+    <p>Everything you've signed up for, and its current status.</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <h3>No registrations yet</h3>
+        <p>Once you register for an event, it'll show up here.</p>
+        <a asp-controller="Events" asp-action="Index" class="btn btn-primary">Browse upcoming events</a>
+    </div>
+}
+else
+{
+    <div style="background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden;">
+        <table class="table" style="margin-bottom: 0;">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Event date</th>
+                    <th>Registered on</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Event?.Name</td>
+                        <td>@item.Event?.EventDate.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>@item.RegistrationDate.ToString("dd MMM yyyy, HH:mm")</td>
+                        <td>
+                            @{
+                                var pillClass = item.Status switch
+                                {
+                                    RegistrationStatus.Confirmed => "status-pill--confirmed",
+                                    RegistrationStatus.Cancelled => "status-pill--cancelled",
+                                    _ => "status-pill--pending",
+                                };
+                            }
+                            <span class="status-pill @pillClass">@item.Status</span>
+                        </td>
+                        <td>
+                            @if (item.Status != RegistrationStatus.Cancelled)
+                            {
+                                <form asp-action="Cancel" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="registrationId" value="@item.RegistrationId" />
+                                    <button type="submit" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.4rem 0.9rem;">Cancel</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

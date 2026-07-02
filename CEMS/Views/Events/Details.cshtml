@@ -1,183 +1,94 @@
 @model Event
 @{
     ViewData["Title"] = "Event Details";
+    int registered = Model.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
+    int capacity = Model.Capacity > 0 ? Model.Capacity : 1;
+    int percentage = Math.Min(100, (int)((registered * 100) / capacity));
 }
 
-<!-- Link to new theme CSS -->
-<link rel="stylesheet" href="~/css/cems-theme.css" />
+<link rel="stylesheet" href="~/css/events.css" asp-append-version="true" />
 
-<!-- Page Header -->
 <div class="page-header">
-    <div class="container">
-        <h1>@Model.Name</h1>
-        <p>@Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")</p>
-    </div>
+    <span class="page-eyebrow">Event</span>
+    <h1>@Model.Name</h1>
+    <p>@Model.EventDate.ToString("dddd, dd MMMM yyyy 'at' HH:mm")</p>
 </div>
 
-<div class="container" style="margin-top: var(--spacing-2xl);">
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-2xl); margin-bottom: var(--spacing-2xl);">
-        @{
-            // Responsive layout handling
-        }
-        
-        <!-- Main Event Info -->
-        <div>
-            <div class="card-modern card-elevated">
-                <img src="@(Model.ImagePath ?? "/images/events/img1_workshop.png")" 
-                     alt="@Model.Name" 
-                     class="card-img-top" 
-                     style="object-fit: cover; height: 320px; width: 100%;" 
-                     onerror="this.src='/images/events/img1_workshop.png'" />
-                <div class="card-body">
-                    <h2 class="mb-3">@Model.Name</h2>
-                    <p class="text-muted" style="line-height: 1.6;">@Model.Description</p>
-                    
-                    <!-- Event Details -->
-                    <div style="background: var(--bg-lighter); padding: var(--spacing-lg); border-radius: var(--radius-lg); margin: var(--spacing-lg) 0;">
-                        <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg);">
-                            <div style="font-size: 1.5rem;">📅</div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--text-dark);">Event Date & Time</div>
-                                <div style="color: var(--text-muted);">@Model.EventDate.ToString("dddd, dd MMMM yyyy HH:mm")</div>
-                            </div>
-                        </div>
+<div class="details-grid">
+    <div class="details-panel">
+        <h2>About this event</h2>
+        <p class="description">@Model.Description</p>
 
-                        <div style="display: grid; grid-template-columns: auto 1fr; gap: var(--spacing-lg);">
-                            <div style="font-size: 1.5rem;">👥</div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--text-dark);">Capacity & Registration</div>
-                                @{
-                                    int registered = Model.Registrations.Count(r => r.Status != RegistrationStatus.Cancelled);
-                                    int capacity = Model.Capacity > 0 ? Model.Capacity : 1;
-                                    int percentage = (int)((registered * 100) / capacity);
-                                }
-                                <div style="color: var(--text-muted); margin-bottom: var(--spacing-sm);">
-                                    <strong>@registered</strong> of <strong>@capacity</strong> participants registered
-                                </div>
-                                <div class="progress-bar-custom" style="height: 24px;">
-                                    <div class="progress-bar-fill" style="width: @(percentage)%;">
-                                        @if (percentage > 10)
-                                        {
-                                            <span>@percentage%</span>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
+        <div class="details-facts">
+            <div>
+                <div class="details-fact-label">Date &amp; time</div>
+                <div class="details-fact-value">@Model.EventDate.ToString("dddd, dd MMMM yyyy HH:mm")</div>
+            </div>
+            <div>
+                <div class="details-fact-label">Capacity &amp; registration</div>
+                <div class="details-fact-value" style="margin-bottom: 0.5rem;">
+                    <strong>@registered</strong> of <strong>@capacity</strong> registered
+                </div>
+                <div class="capacity-bar">
+                    <div class="capacity-bar-fill" style="width: @(percentage)%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">Back to events</a>
+            @if (Context.Session.CurrentUserRole() == "Participant")
+            {
+                <form asp-controller="Registrations" asp-action="Register" method="post" style="display: contents;">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="eventId" value="@Model.EventId" />
+                    <button type="submit" class="btn btn-primary">Register for this event</button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <div>
+        <div class="registry" style="margin-bottom: 1.5rem;">
+            <p class="registry-heading">Venues (@Model.Venues.Count)</p>
+            @if (Model.Venues.Count == 0)
+            {
+                <p class="registry-empty">No venues assigned yet.</p>
+            }
+            else
+            {
+                @foreach (var venue in Model.Venues)
+                {
+                    <div class="registry-entry">
+                        <span class="registry-tag">Cap. @venue.Capacity</span>
+                        <div class="registry-body">
+                            <h3>@venue.Name</h3>
+                            <p>@venue.Address</p>
                         </div>
                     </div>
-                </div>
-            </div>
+                }
+            }
         </div>
 
-        <!-- Venues & Activities -->
-        <div>
-            <!-- Venues Card -->
-            <div class="card-modern card-elevated" style="margin-bottom: var(--spacing-lg);">
-                <div style="background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: var(--spacing-lg); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
-                    <h3 style="margin: 0; color: white; font-size: 1.25rem;">📍 Venues (@Model.Venues.Count)</h3>
-                </div>
-                <div class="card-body">
-                    @if (Model.Venues.Count == 0)
-                    {
-                        <p class="text-muted mb-0">No venues assigned yet.</p>
-                    }
-                    else
-                    {
-                        @foreach (var venue in Model.Venues)
-                        {
-                            <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color);">
-                                <div style="flex-shrink: 0;">
-                                    <img src="@(venue.ImagePath ?? "/images/venues/img1_auditorium.png")" 
-                                         alt="@venue.Name" 
-                                         class="img-thumbnail" 
-                                         style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);"
-                                         onerror="this.src='/images/venues/img1_auditorium.png'" />
-                                </div>
-                                <div style="flex-grow: 1;">
-                                    <h5 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">@venue.Name</h5>
-                                    <p style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-muted); font-size: 0.9rem;">📍 @venue.Address</p>
-                                    <div class="event-meta-badge" style="display: inline-block; background: var(--bg-lighter); color: var(--text-dark);">
-                                        👥 Capacity: @venue.Capacity
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
-
-            <!-- Activities Card -->
-            <div class="card-modern card-elevated">
-                <div style="background: linear-gradient(135deg, #10b981, #059669); color: white; padding: var(--spacing-lg); border-radius: var(--radius-lg) var(--radius-lg) 0 0;">
-                    <h3 style="margin: 0; color: white; font-size: 1.25rem;">🎯 Activities (@Model.Activities.Count)</h3>
-                </div>
-                <div class="card-body">
-                    @if (Model.Activities.Count == 0)
-                    {
-                        <p class="text-muted mb-0">No activities assigned yet.</p>
-                    }
-                    else
-                    {
-                        @foreach (var activity in Model.Activities)
-                        {
-                            <div style="display: flex; gap: var(--spacing-lg); margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-lg); border-bottom: 1px solid var(--border-color);">
-                                <div style="flex-shrink: 0;">
-                                    <img src="@(activity.ImagePath ?? "/images/activities/img1_talk.png")" 
-                                         alt="@activity.Name" 
-                                         class="img-thumbnail" 
-                                         style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-color);"
-                                         onerror="this.src='/images/activities/img1_talk.png'" />
-                                </div>
-                                <div style="flex-grow: 1;">
-                                    <h5 style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-dark);">@activity.Name</h5>
-                                    <p style="margin: 0 0 var(--spacing-xs) 0; color: var(--text-muted); font-size: 0.9rem;">@activity.Description</p>
-                                    <div class="badge-modern badge-info">@activity.Type</div>
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            </div>
+        <div class="registry">
+            <p class="registry-heading">Activities (@Model.Activities.Count)</p>
+            @if (Model.Activities.Count == 0)
+            {
+                <p class="registry-empty">No activities assigned yet.</p>
+            }
+            else
+            {
+                @foreach (var activity in Model.Activities)
+                {
+                    <div class="registry-entry">
+                        <span class="registry-tag">@activity.Type</span>
+                        <div class="registry-body">
+                            <h3>@activity.Name</h3>
+                            <p>@activity.Description</p>
+                        </div>
+                    </div>
+                }
+            }
         </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div style="display: flex; gap: var(--spacing-lg); margin-top: var(--spacing-2xl); margin-bottom: var(--spacing-2xl); flex-wrap: wrap;">
-        <a asp-action="Index" class="btn-secondary-modern">
-            ← Back to Events
-        </a>
-        @if (Context.Session.CurrentUserRole() == "Participant")
-        {
-            <form asp-controller="Registrations" asp-action="Register" method="post" style="display: contents;">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="eventId" value="@Model.EventId" />
-                <button type="submit" class="btn-success-modern">
-                    ✅ Register for This Event
-                </button>
-            </form>
-        }
     </div>
 </div>
-
-<!-- Responsive Design -->
-<style>
-    @@media (max-width: 1024px) {
-        div[style*="grid-template-columns: 1fr 1fr"] {
-            grid-template-columns: 1fr !important;
-        }
-    }
-
-    .card-img-top {
-        animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @@keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-</style>
-

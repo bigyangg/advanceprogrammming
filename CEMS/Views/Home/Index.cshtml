@@ -1,12 +1,70 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Community Event Management System</h1>
-    <p class="lead">Browse upcoming events, register as a participant, or manage records as an administrator.</p>
-    <p>
-        <a class="btn btn-primary" asp-controller="Events" asp-action="Index">View Upcoming Events</a>
-        <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Login">Login</a>
-    </p>
-</div>
+<link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+
+<section class="hero">
+    <div class="hero-grid">
+        <div>
+            <span class="hero-eyebrow">Community Event Management System</span>
+            <h1 class="hero-title">Where the community shows up.</h1>
+            <p class="hero-lede">
+                Browse what's happening, register in a couple of clicks, and keep
+                track of everything you've signed up for &mdash; all in one place.
+            </p>
+            <div class="hero-actions">
+                <a class="btn btn-primary" asp-controller="Events" asp-action="Index">View Upcoming Events</a>
+                <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Login">Login</a>
+            </div>
+        </div>
+
+        <div class="registry">
+            <span class="registry-stamp">Community Registry</span>
+            <p class="registry-heading">What CEMS keeps track of</p>
+
+            <div class="registry-entry">
+                <span class="registry-tag">Events</span>
+                <div class="registry-body">
+                    <h3>Scheduled gatherings</h3>
+                    <p>Talks, workshops and sprints, each with a date, venue and capacity.</p>
+                </div>
+            </div>
+            <div class="registry-entry">
+                <span class="registry-tag">Venues</span>
+                <div class="registry-body">
+                    <h3>Where they happen</h3>
+                    <p>Halls, labs and open ground, matched to the crowd each event expects.</p>
+                </div>
+            </div>
+            <div class="registry-entry">
+                <span class="registry-tag">Activities</span>
+                <div class="registry-body">
+                    <h3>What's on the agenda</h3>
+                    <p>Workshops, talks and games attached to the events that host them.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="process">
+    <h2 class="process-heading">How it works</h2>
+    <div class="process-grid">
+        <div class="process-step">
+            <span class="process-index">01</span>
+            <h3>Browse</h3>
+            <p>See what's coming up, filtered by date, venue or the kind of activity you're after.</p>
+        </div>
+        <div class="process-step">
+            <span class="process-index">02</span>
+            <h3>Register</h3>
+            <p>Sign up as a participant and hold your spot before capacity runs out.</p>
+        </div>
+        <div class="process-step">
+            <span class="process-index">03</span>
+            <h3>Attend</h3>
+            <p>Track your registrations and get updates if anything about the event changes.</p>
+        </div>
+    </div>
+</section>

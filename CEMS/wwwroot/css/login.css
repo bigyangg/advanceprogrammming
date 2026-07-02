@@ -1,0 +1,197 @@
+/* Account/Login — sign-in card + demo account registers.
+   Loaded only on Account/Login. Uses tokens defined in site.css. */
+
+.auth {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 3rem 0 4rem;
+}
+
+.auth-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ochre);
+  margin-bottom: 0.75rem;
+}
+
+.auth-title {
+  font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+  margin-bottom: 0.6rem;
+}
+
+.auth-lede {
+  color: var(--ink-soft);
+  max-width: 52ch;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.auth-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.auth-card-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 1rem;
+}
+
+.auth-form-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-end;
+}
+
+.auth-form-row .form-group {
+  flex: 1;
+}
+
+.auth-form-row label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+
+.auth-form-row .form-control {
+  padding: 0.6rem 0.8rem;
+}
+
+.auth-error {
+  color: #a3312a;
+  background: #fbeceb;
+  border: 1px solid #e6b8b3;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  font-size: 0.88rem;
+  margin-bottom: 1.25rem;
+}
+
+.auth-error:empty {
+  display: none;
+}
+
+.auth-field-error {
+  display: block;
+  color: #a3312a;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.auth-registers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.auth-register-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--forest);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.auth-register-heading .role-badge {
+  color: var(--ochre);
+}
+
+.account-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--line-strong);
+  padding: 0.75rem 0.1rem;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-body);
+  color: var(--ink);
+}
+
+.account-row:last-child {
+  border-bottom: none;
+}
+
+.account-row:hover,
+.account-row:focus-visible {
+  color: var(--forest-ink);
+  outline: none;
+}
+
+.account-row:hover .account-id,
+.account-row:focus-visible .account-id {
+  border-color: var(--forest);
+  color: var(--forest-ink);
+}
+
+.account-name {
+  font-weight: 500;
+}
+
+.account-id {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-faint);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.account-empty {
+  color: var(--ink-faint);
+  font-size: 0.9rem;
+  padding: 0.75rem 0.1rem;
+}
+
+@media (max-width: 700px) {
+  .auth-registers {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

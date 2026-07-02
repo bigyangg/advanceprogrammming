@@ -4,69 +4,75 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - CEMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CEMS.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CEMS</a>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
+            <div class="container site-nav">
+                <a class="brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="brand-mark" aria-hidden="true"></span>
+                    <span class="brand-word">CEMS</span>
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="nav-links navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Events" asp-action="Index">Upcoming Events</a>
+                            <a class="nav-link" asp-controller="Events" asp-action="Index">Upcoming Events</a>
                         </li>
                         @if (Context.Session.CurrentUserRole() == "Participant")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Registrations" asp-action="MyRegistrations">My Registrations</a>
+                                <a class="nav-link" asp-controller="Registrations" asp-action="MyRegistrations">My Registrations</a>
                             </li>
                         }
                         @if (Context.Session.CurrentUserRole() == "Administrator")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Events" asp-action="AdminIndex">Manage Events</a>
+                                <a class="nav-link" asp-controller="Events" asp-action="AdminIndex">Manage Events</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Venues" asp-action="Index">Venues</a>
+                                <a class="nav-link" asp-controller="Venues" asp-action="Index">Venues</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Activities" asp-action="Index">Activities</a>
+                                <a class="nav-link" asp-controller="Activities" asp-action="Index">Activities</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Participants" asp-action="Index">Participants</a>
+                                <a class="nav-link" asp-controller="Participants" asp-action="Index">Participants</a>
                             </li>
                         }
                     </ul>
-                    <ul class="navbar-nav">
+                    <ul class="nav-account navbar-nav">
                         @if (Context.Session.CurrentUserId() is not null)
                         {
                             <li class="nav-item">
-                                <span class="nav-link text-dark">
-                                    Signed in as <strong>@Context.Session.CurrentUserName()</strong> (@Context.Session.CurrentUserRole())
+                                <span class="user-chip">
+                                    <strong>@Context.Session.CurrentUserName()</strong> &middot; @Context.Session.CurrentUserRole()
                                 </span>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
-                                    <button type="submit" class="btn btn-link nav-link text-dark">Logout</button>
+                                    <button type="submit" class="btn btn-link nav-link">Logout</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
                 </div>
@@ -75,13 +81,22 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (TempData["FlashSuccess"] is string flashSuccess)
+            {
+                <div class="flash flash-success">@flashSuccess</div>
+            }
+            @if (TempData["FlashError"] is string flashError)
+            {
+                <div class="flash flash-error">@flashError</div>
+            }
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CEMS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="site-footer">
+        <div class="container site-footer-inner">
+            <span>&copy; 2026 CEMS &mdash; Community Event Management System</span>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,3 +1,4 @@
+using CEMS.Exceptions;
 using CEMS.Filters;
 using CEMS.Infrastructure;
 using CEMS.Repositories;
@@ -31,15 +32,34 @@ public class RegistrationsController(IRegistrationService registrationService, I
         var participantId = HttpContext.Session.CurrentUserId();
         if (participantId is null) return RedirectToAction("Login", "Account");
 
-        await registrationService.RegisterAsync(participantId.Value, eventId);
-        return RedirectToAction(nameof(MyRegistrations));
+        try
+        {
+            await registrationService.RegisterAsync(participantId.Value, eventId);
+            var registeredEvent = await unitOfWork.Events.GetByIdAsync(eventId);
+            TempData["FlashSuccess"] = $"You're registered for {registeredEvent?.Name ?? "this event"}.";
+            return RedirectToAction(nameof(MyRegistrations));
+        }
+        catch (CEMSException ex)
+        {
+            TempData["FlashError"] = ex.Message;
+            return RedirectToAction("Details", "Events", new { id = eventId });
+        }
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Cancel(int registrationId)
     {
-        await registrationService.CancelAsync(registrationId);
+        try
+        {
+            await registrationService.CancelAsync(registrationId);
+            TempData["FlashSuccess"] = "Registration cancelled.";
+        }
+        catch (CEMSException ex)
+        {
+            TempData["FlashError"] = ex.Message;
+        }
+
         return RedirectToAction(nameof(MyRegistrations));
     }
 }

@@ -5,39 +5,85 @@
     var administrators = ViewBag.Administrators as IEnumerable<Administrator> ?? [];
 }
 
-<h2>Login (Demo Session-Based)</h2>
-<p>Enter a valid Person ID to act as that user.</p>
+<link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 
-<form asp-action="Login" method="post" class="mb-4">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="mb-3">
-        <label asp-for="PersonId" class="form-label"></label>
-        <input asp-for="PersonId" class="form-control" />
-        <span asp-validation-for="PersonId" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+<section class="auth">
+    <span class="auth-eyebrow">Sign in</span>
+    <h1 class="auth-title">Log in to CEMS</h1>
+    <p class="auth-lede">
+        This is a demo, session-based login &mdash; no password required.
+        Enter a person ID below, or pick an account from the registers.
+    </p>
 
-<div class="row">
-    <div class="col-md-6">
-        <h4>Participants</h4>
-        <ul>
-            @foreach (var p in participants)
-            {
-                <li>ID @p.PersonId - @p.Name</li>
-            }
-        </ul>
+    <div class="auth-card">
+        <div class="auth-card-label">Sign in with a person ID</div>
+        <div asp-validation-summary="ModelOnly" class="auth-error"></div>
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+            <div class="auth-form-row">
+                <div class="form-group">
+                    <label asp-for="PersonId"></label>
+                    <input asp-for="PersonId" class="form-control" autocomplete="off" />
+                    <span asp-validation-for="PersonId" class="auth-field-error"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Sign in</button>
+            </div>
+        </form>
     </div>
-    <div class="col-md-6">
-        <h4>Administrators</h4>
-        <ul>
-            @foreach (var a in administrators)
+
+    <div class="auth-divider">or continue as</div>
+
+    <div class="auth-registers">
+        <div>
+            <div class="auth-register-heading">
+                <span>Participants</span>
+                <span class="role-badge">Participant</span>
+            </div>
+            @if (!participants.Any())
             {
-                <li>ID @a.PersonId - @a.Name</li>
+                <p class="account-empty">No participant accounts yet.</p>
             }
-        </ul>
+            else
+            {
+                @foreach (var p in participants)
+                {
+                    <form asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="PersonId" value="@p.PersonId" />
+                        <button type="submit" class="account-row">
+                            <span class="account-name">@p.Name</span>
+                            <span class="account-id">ID @p.PersonId</span>
+                        </button>
+                    </form>
+                }
+            }
+        </div>
+        <div>
+            <div class="auth-register-heading">
+                <span>Administrators</span>
+                <span class="role-badge">Administrator</span>
+            </div>
+            @if (!administrators.Any())
+            {
+                <p class="account-empty">No administrator accounts yet.</p>
+            }
+            else
+            {
+                @foreach (var a in administrators)
+                {
+                    <form asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="PersonId" value="@a.PersonId" />
+                        <button type="submit" class="account-row">
+                            <span class="account-name">@a.Name</span>
+                            <span class="account-id">ID @a.PersonId</span>
+                        </button>
+                    </form>
+                }
+            }
+        </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

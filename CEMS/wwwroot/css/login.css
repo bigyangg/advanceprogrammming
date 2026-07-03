@@ -109,22 +109,10 @@
   background: var(--line);
 }
 
-.auth-register-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--forest);
+.auth-tab-panel .registry-heading {
   border-bottom: 1px solid var(--line);
   padding-bottom: 0.6rem;
   margin-bottom: 0.4rem;
-}
-
-.auth-register-heading .role-badge {
-  color: var(--ochre);
 }
 
 /* ---- Participant/Admin tab toggle: pure CSS, no JS ---- */
@@ -226,56 +214,37 @@
   margin-bottom: 0.35rem;
 }
 
-.account-row {
+/* Registry entries repurposed as one-click sign-in buttons */
+button.auth-account-entry {
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  background: transparent;
+  background: none;
   border: none;
-  border-bottom: 1px dashed var(--line-strong);
-  padding: 0.75rem 0.1rem;
-  text-align: left;
+  border-top: 1px dashed var(--line-strong);
   cursor: pointer;
-  font-family: var(--font-body);
-  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  color: inherit;
 }
 
-.account-row:last-child {
-  border-bottom: none;
+button.auth-account-entry:first-of-type {
+  border-top: none;
 }
 
-.account-row:hover,
-.account-row:focus-visible {
-  color: var(--forest-ink);
+button.auth-account-entry:hover,
+button.auth-account-entry:focus-visible {
+  background: var(--forest-wash);
   outline: none;
+  border-radius: var(--radius-sm);
 }
 
-.account-row:hover .account-id,
-.account-row:focus-visible .account-id {
-  border-color: var(--forest);
+button.auth-account-entry:hover .registry-tag,
+button.auth-account-entry:focus-visible .registry-tag {
   color: var(--forest-ink);
 }
 
-.account-name {
-  font-weight: 500;
-}
-
-.account-id {
-  flex: none;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--ink-faint);
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  padding: 0.2rem 0.6rem;
-}
-
-.account-empty {
-  color: var(--ink-faint);
-  font-size: 0.9rem;
-  padding: 0.75rem 0.1rem;
+button.auth-account-entry:hover .registry-body h3,
+button.auth-account-entry:focus-visible .registry-body h3 {
+  color: var(--forest-ink);
 }
 
 @media (max-width: 700px) {

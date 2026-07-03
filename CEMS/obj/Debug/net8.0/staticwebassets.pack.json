@@ -1,10 +1,6 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\CEMS.bundle.scp.css",
-      "PackagePath": "staticwebassets\\CEMS.bundle.scp.css"
-    },
-    {
       "Id": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\events.css",
       "PackagePath": "staticwebassets\\css\\events.css"
     },

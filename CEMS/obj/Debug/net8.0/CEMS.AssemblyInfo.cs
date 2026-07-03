@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CEMS")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+90539100863e3b3d566fab2b39abf65684bc01be")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c66dd9e6030aeea94b884a4e2d723bac3cf9cbd5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CEMS")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CEMS")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

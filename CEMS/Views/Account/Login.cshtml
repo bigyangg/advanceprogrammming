@@ -26,7 +26,8 @@
             <div class="auth-form-row">
                 <div class="form-group">
                     <label asp-for="PersonId"></label>
-                    <input asp-for="PersonId" class="form-control" autocomplete="off" />
+                    <input asp-for="PersonId" class="form-control" autocomplete="off" placeholder="e.g. 1" min="1"
+                           value="@(Model.PersonId == 0 ? null : Model.PersonId.ToString())" />
                     <span asp-validation-for="PersonId" class="auth-field-error"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Sign in</button>
@@ -46,27 +47,26 @@
         </div>
 
         <div class="auth-tab-panel auth-tab-panel--participant">
-            <div class="auth-register-heading">
-                <span>Participants</span>
-                <span class="role-badge">Participant</span>
-            </div>
+            <p class="registry-heading">Existing accounts</p>
             @if (!participants.Any())
             {
-                <p class="account-empty">No participant accounts yet.</p>
+                <p class="registry-empty">No participant accounts yet.</p>
             }
             else
             {
-                @foreach (var p in participants)
-                {
-                    <form asp-action="Login" method="post">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="PersonId" value="@p.PersonId" />
-                        <button type="submit" class="account-row">
-                            <span class="account-name">@p.Name</span>
-                            <span class="account-id">ID @p.PersonId</span>
+                <form asp-action="Login" method="post" class="auth-account-list">
+                    @Html.AntiForgeryToken()
+                    @foreach (var p in participants)
+                    {
+                        <button type="submit" name="PersonId" value="@p.PersonId" class="registry-entry auth-account-entry">
+                            <span class="registry-tag">ID @p.PersonId</span>
+                            <div class="registry-body">
+                                <h3>@p.Name</h3>
+                                <p>@p.Email</p>
+                            </div>
                         </button>
-                    </form>
-                }
+                    }
+                </form>
             }
 
             <details class="auth-signup" @(showSignupForm ? "open" : "")>
@@ -95,27 +95,26 @@
         </div>
 
         <div class="auth-tab-panel auth-tab-panel--admin">
-            <div class="auth-register-heading">
-                <span>Administrators</span>
-                <span class="role-badge">Administrator</span>
-            </div>
+            <p class="registry-heading">Existing accounts</p>
             @if (!administrators.Any())
             {
-                <p class="account-empty">No administrator accounts yet.</p>
+                <p class="registry-empty">No administrator accounts yet.</p>
             }
             else
             {
-                @foreach (var a in administrators)
-                {
-                    <form asp-action="Login" method="post">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" name="PersonId" value="@a.PersonId" />
-                        <button type="submit" class="account-row">
-                            <span class="account-name">@a.Name</span>
-                            <span class="account-id">ID @a.PersonId</span>
+                <form asp-action="Login" method="post" class="auth-account-list">
+                    @Html.AntiForgeryToken()
+                    @foreach (var a in administrators)
+                    {
+                        <button type="submit" name="PersonId" value="@a.PersonId" class="registry-entry auth-account-entry">
+                            <span class="registry-tag">ID @a.PersonId</span>
+                            <div class="registry-body">
+                                <h3>@a.Name</h3>
+                                <p>@a.Email</p>
+                            </div>
                         </button>
-                    </form>
-                }
+                    }
+                </form>
             }
         </div>
     </div>

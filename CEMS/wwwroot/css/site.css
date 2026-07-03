@@ -325,3 +325,211 @@ a:hover {
   font-size: 0.9rem;
   margin: 0;
 }
+
+/* ============================================================
+   Site header / primary navigation
+   ============================================================ */
+.site-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .navbar {
+  padding: 0;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  padding: 0.85rem 1rem;
+  gap: 1.5rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  text-decoration: none !important;
+  color: var(--ink) !important;
+}
+
+.brand-mark {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--ochre);
+}
+
+.brand-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0.01em;
+}
+
+.navbar-toggler {
+  border-color: var(--line-strong);
+  padding: 0.35rem 0.55rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: 0 0 0 3px var(--forest-wash);
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23142420' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.nav-links,
+.nav-account {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin: 0;
+  gap: 0.15rem;
+}
+
+.nav-account {
+  gap: 0.75rem;
+  flex: none;
+}
+
+.site-nav .nav-item {
+  list-style: none;
+}
+
+.site-nav .nav-link {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--ink-soft) !important;
+  padding: 0.45rem 0.7rem !important;
+  border-radius: var(--radius-sm);
+  text-decoration: none !important;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.site-nav .nav-link:hover,
+.site-nav .nav-link:focus {
+  color: var(--forest-ink) !important;
+  background: var(--forest-wash);
+}
+
+.site-nav .nav-link.active {
+  color: var(--forest-ink) !important;
+  background: var(--forest-wash);
+  font-weight: 600;
+}
+
+.site-nav .btn-link.nav-link {
+  border: none;
+  background: none;
+  line-height: inherit;
+}
+
+.site-nav .nav-link.nav-cta {
+  color: #fff !important;
+  background: var(--forest);
+  font-weight: 600;
+}
+
+.site-nav .nav-link.nav-cta:hover,
+.site-nav .nav-link.nav-cta:focus {
+  color: #fff !important;
+  background: var(--forest-ink);
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0.4rem 0.85rem;
+  white-space: nowrap;
+}
+
+.user-chip strong {
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+@media (max-width: 991.98px) {
+  .site-nav {
+    flex-wrap: wrap;
+  }
+
+  .navbar-collapse {
+    flex-basis: 100%;
+    width: 100%;
+    border-top: 1px solid var(--line);
+    margin-top: 0.85rem;
+    padding: 0.75rem 0 0.25rem;
+  }
+
+  .nav-links,
+  .nav-account {
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 0.15rem;
+  }
+
+  .nav-account {
+    border-top: 1px dashed var(--line-strong);
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+  }
+
+  .site-nav .nav-link {
+    width: 100%;
+  }
+
+  .site-nav .btn-link.nav-link {
+    text-align: left;
+  }
+
+  .nav-cta {
+    text-align: center;
+  }
+
+  .user-chip {
+    width: fit-content;
+  }
+}
+
+/* ============================================================
+   Site footer
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 2.5rem;
+}
+
+.site-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.25rem 1rem;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+.site-footer-inner a {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.site-footer-inner a:hover {
+  color: var(--forest-ink);
+}

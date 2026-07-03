@@ -117,9 +117,7 @@ C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\staticwebasset
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.CEMS.props
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.CEMS.props
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\staticwebassets.pack.json
-C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\scopedcss\bundle\CEMS.styles.css
-C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\scopedcss\projectbundle\CEMS.bundle.scp.css
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\CEMS.csproj.Up2Date
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\CEMS.dll
 C:\Users\DELL\Downloads\advanceprogrammming\CEMS\obj\Debug\net8.0\refint\CEMS.dll

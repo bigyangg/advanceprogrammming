@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "q4IkFsW1FvMtr8BTTCiWCGAnQoF1q6bebMYLLs/6QWM=",
+  "Hash": "Spq/lSQFcYbfSfR2pqcGbaqRaxppFAoQKXTB9Z5f7FQ=",
   "Source": "CEMS",
   "BasePath": "_content/CEMS",
   "Mode": "Default",
@@ -16,44 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\CEMS.styles.css",
-      "SourceId": "CEMS",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/CEMS",
-      "RelativePath": "CEMS.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\bundle\\CEMS.styles.css"
-    },
-    {
-      "Identity": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\CEMS.bundle.scp.css",
-      "SourceId": "CEMS",
-      "SourceType": "Computed",
-      "ContentRoot": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/CEMS",
-      "RelativePath": "CEMS.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\CEMS.bundle.scp.css"
-    },
     {
       "Identity": "C:\\Users\\DELL\\Downloads\\advanceprogrammming\\CEMS\\wwwroot\\css\\events.css",
       "SourceId": "CEMS",

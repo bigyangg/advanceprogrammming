@@ -14,6 +14,8 @@ This is my ASP.NET Core MVC (.NET 8) project for the CET254 assignment. It's a w
 
 Login is session-based and passwordless (you just pick a person ID) — this is a demo/assignment app, not a production login system, so I kept it simple on purpose. What I did add this round is a proper self-signup flow so a new participant doesn't need an admin to create their account for them, plus a Participant/Admin tab toggle on the login page so the two account types aren't just dumped in one long list.
 
+This latest round was a visual pass rather than a functional one: a leftover, conflicting stylesheet was silently overriding the nav bar's theme (broken alignment, an unreadable Login button), so I tracked that down and removed it, fixed the nav collapse breakpoint so it doesn't wrap on tablet-width screens, and rebuilt the login page's account list to match the "registry" ledger styling already used on the homepage and profile page instead of being a one-off component.
+
 ### Feature list
 - Full CRUD for Events, Venues, Activities and Participants
 - Self-service participant signup, with auto sign-in straight after creating the account
@@ -169,45 +171,4 @@ dotnet ef migrations add <MigrationName> --project CEMS/CEMS.csproj
 
 ---
 
-## Submission checklist
-
-- [x] Source code (`CEMS/` and `CEMS.Tests/`)
-- [x] Seeded `cems.db` included
-- [x] 15/15 unit tests passing
-- [x] Builds with 0 errors, 0 warnings
-- [ ] UML document (use case + class diagram) — separate Word/PDF, not part of this repo
-- [ ] Test documentation / results write-up
-- [ ] Demo video link (Panopto, ≤10 min)
-
-### Suggested demo order
-1. Log in as admin (ID 100), walk through creating an event and assigning a venue/activity
-2. Log out, use the new signup flow to create a participant account
-3. Browse events, filter by date/venue/activity, register for one
-4. Show the capacity check by trying to overbook, and the duplicate-registration check
-5. Cancel a registration, then show a second participant can't cancel someone else's booking
-6. Log back in as admin, confirm the pending registration
-7. Generate and view a ticket
-8. `dotnet test` — 15 passing
-
-### Zip structure
-```
-SURNAME_FORENAME/
-├── Solution/                 CEMS/ and CEMS.Tests/
-├── Documentation.docx        UML diagrams + test results
-└── SURNAME_FORENAME.txt      Panopto link
-```
-
----
-
-## Troubleshooting
-
-| Issue | Fix |
-|-------|-----|
-| `dotnet` not recognised | Add the .NET SDK to PATH |
-| DB error on first run | Run the `dotnet ef database update` command above |
-| Port already in use | Check/change `Properties/launchSettings.json` |
-| Test failures | Make sure the SQLite provider is restored (`dotnet restore`) — tests use a real in-memory SQLite connection |
-
----
-
-*CET254 Advanced Programming — last touched 2026-07-02.*
+*CET254 Advanced Programming — last touched 2026-07-03.*

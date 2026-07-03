@@ -11,6 +11,7 @@ public class EventFormViewModel
     public string Name { get; set; } = string.Empty;
 
     [Required]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-ddTHH:mm}", ApplyFormatInEditMode = true)]
     public DateTime EventDate { get; set; }
 
     [Required]

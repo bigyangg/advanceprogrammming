@@ -1,4 +1,5 @@
 @model EventFormViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
 @{
     ViewData["Title"] = "Edit Event";
 }
@@ -11,39 +12,99 @@
     <p>Update the details, or adjust the venues and activities assigned to it.</p>
 </div>
 
-<div class="details-panel" style="max-width: 640px;">
+<div class="event-form-shell">
     <form asp-action="Edit" method="post">
         <input type="hidden" asp-for="EventId" />
         <div asp-validation-summary="ModelOnly" class="form-error-summary"></div>
-        <div class="form-group mb-3">
-            <label asp-for="Name" class="form-label"></label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="field-error"></span>
+
+        <div class="form-section">
+            <div class="form-section-head">
+                <span class="form-section-eyebrow">01 — Details</span>
+                <h2>What's happening</h2>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="e.g. Tech Connect 2026" />
+                <span asp-validation-for="Name" class="field-error"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="4" placeholder="What should participants expect?"></textarea>
+                <span asp-validation-for="Description" class="field-error"></span>
+            </div>
         </div>
-        <div class="form-group mb-3">
-            <label asp-for="EventDate" class="form-label"></label>
-            <input asp-for="EventDate" class="form-control" type="datetime-local" />
-            <span asp-validation-for="EventDate" class="field-error"></span>
+
+        <div class="form-section">
+            <div class="form-section-head">
+                <span class="form-section-eyebrow">02 — Schedule &amp; capacity</span>
+                <h2>When &amp; how many</h2>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label asp-for="EventDate">Date &amp; time</label>
+                    <input asp-for="EventDate" class="form-control" type="datetime-local" />
+                    <p class="field-hint">Shown to participants exactly as entered.</p>
+                    <span asp-validation-for="EventDate" class="field-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Capacity"></label>
+                    <input asp-for="Capacity" class="form-control" min="1" placeholder="e.g. 100" />
+                    <p class="field-hint">Total seats across all registrations.</p>
+                    <span asp-validation-for="Capacity" class="field-error"></span>
+                </div>
+            </div>
         </div>
-        <div class="form-group mb-3">
-            <label asp-for="Description" class="form-label"></label>
-            <textarea asp-for="Description" class="form-control"></textarea>
-            <span asp-validation-for="Description" class="field-error"></span>
+
+        <div class="form-section">
+            <div class="form-section-head">
+                <span class="form-section-eyebrow">03 — Assignments</span>
+                <h2>Where &amp; what's on</h2>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label>Venues</label>
+                    @{ var venueItems = (IEnumerable<SelectListItem>)ViewBag.Venues; }
+                    @if (!venueItems.Any())
+                    {
+                        <p class="field-hint">No venues yet — <a asp-controller="Venues" asp-action="Create">create one first</a>.</p>
+                    }
+                    else
+                    {
+                        <div class="checkbox-chip-list">
+                            @foreach (var item in venueItems)
+                            {
+                                <label class="checkbox-chip">
+                                    <input type="checkbox" name="SelectedVenueIds" value="@item.Value" checked="@item.Selected" />
+                                    <span>@item.Text</span>
+                                </label>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label>Activities</label>
+                    @{ var activityItems = (IEnumerable<SelectListItem>)ViewBag.Activities; }
+                    @if (!activityItems.Any())
+                    {
+                        <p class="field-hint">No activities yet — <a asp-controller="Activities" asp-action="Create">create one first</a>.</p>
+                    }
+                    else
+                    {
+                        <div class="checkbox-chip-list">
+                            @foreach (var item in activityItems)
+                            {
+                                <label class="checkbox-chip">
+                                    <input type="checkbox" name="SelectedActivityIds" value="@item.Value" checked="@item.Selected" />
+                                    <span>@item.Text</span>
+                                </label>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
-        <div class="form-group mb-3">
-            <label asp-for="Capacity" class="form-label"></label>
-            <input asp-for="Capacity" class="form-control" />
-            <span asp-validation-for="Capacity" class="field-error"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label">Venues</label>
-            <select asp-for="SelectedVenueIds" asp-items="ViewBag.Venues" class="form-select" multiple></select>
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label">Activities</label>
-            <select asp-for="SelectedActivityIds" asp-items="ViewBag.Activities" class="form-select" multiple></select>
-        </div>
-        <div class="details-actions" style="margin-top: 1.5rem;">
+
+        <div class="details-actions">
             <button type="submit" class="btn btn-primary">Update</button>
             <a asp-action="AdminIndex" class="btn btn-outline-secondary">Cancel</a>
         </div>

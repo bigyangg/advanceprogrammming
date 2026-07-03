@@ -245,6 +245,133 @@
   color: var(--ink);
 }
 
+/* ---- Event create/edit form ---- */
+.event-form-shell {
+  max-width: 760px;
+}
+
+.form-section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1.75rem 1.75rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-section-head {
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px dashed var(--line-strong);
+}
+
+.form-section-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ochre);
+  margin-bottom: 0.3rem;
+}
+
+.form-section-head h2 {
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.event-form-shell .form-group {
+  margin-bottom: 1.25rem;
+}
+
+.event-form-shell .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.event-form-shell .form-group label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+
+.event-form-shell textarea.form-control {
+  resize: vertical;
+  min-height: 5rem;
+}
+
+.field-hint {
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  margin: 0.4rem 0 0;
+}
+
+.field-hint a {
+  color: var(--forest);
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.event-form-shell input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(28%) sepia(22%) saturate(1100%) hue-rotate(115deg) brightness(90%);
+  cursor: pointer;
+}
+
+/* Checkbox chip picker — replaces native <select multiple> for Venues/Activities */
+.checkbox-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.checkbox-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem 0.45rem 0.7rem;
+  cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.checkbox-chip input[type="checkbox"] {
+  accent-color: var(--forest);
+  margin: 0;
+  width: 0.95rem;
+  height: 0.95rem;
+  cursor: pointer;
+}
+
+.checkbox-chip:hover {
+  border-color: var(--ink-soft);
+}
+
+.checkbox-chip:has(input:checked) {
+  background: var(--forest-wash);
+  border-color: var(--forest);
+  color: var(--forest-ink);
+  font-weight: 600;
+}
+
+.event-form-shell .details-actions {
+  margin-top: 0;
+}
+
+@media (max-width: 640px) {
+  .form-row-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---- Registration table (My Registrations) ---- */
 .table thead th {
   font-family: var(--font-mono);
